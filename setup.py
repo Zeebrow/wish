@@ -9,7 +9,7 @@ setup(
         'GitPython'
     ],
     entry_points={
-        'console_script': [
+        'console_scripts': [
             'wish = main:cli',
         ],
     },

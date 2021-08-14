@@ -39,5 +39,5 @@ cli.add_command(ls.get_wishes, name='ls')
 cli.add_command(ls.get_wish, name='get')
 cli.add_command(delete.delete, name='del')
 
-if __name__ == '__main__':
-    cli()
+#if __name__ == '__main__':
+#    cli()
