@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(
-    name='prospector',
+    name='wish',
     version='0.0.1',
     py_modules=[''],
     install_requires=[
@@ -10,7 +10,7 @@ setup(
     ],
     entry_points={
         'console_script': [
-            'wish = main_cmd:cli',
+            'wish = main:cli',
         ],
     },
 )
