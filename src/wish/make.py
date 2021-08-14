@@ -46,7 +46,7 @@ def _stage_new_wish(wish, debug, no_commit):
 
 
     """
-    block=dedent(block)
+    block = dedent(block)
     block = click.edit(block, require_save=True, extension='.md')
     if not block:
         logger.warning(f"Wish '{wish}' not created - changes were not saved.")

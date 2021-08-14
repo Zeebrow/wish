@@ -5,7 +5,8 @@ import constants as C
 logger = logging.getLogger(__name__)
 
 @click.command(short_help="Prints the list of wishes currently stored in wishlist.md and exits.")
-def get_wishes():
+@click.argument('fname')
+def get_wishes(fname=C.wishlist):
     """
     Prints the list of wishes currently stored in wishlist.md and exits.
 

@@ -3,6 +3,7 @@ import click
 import make
 import ls
 import delete
+import edit
 
 logger = logging.getLogger()
 f = logging.Formatter('%(asctime)s : %(name)s : %(funcName)s : %(levelname)s: %(message)s')
@@ -30,7 +31,6 @@ def cli():
     - grant a wish to move it off of wishlist.md and onto magicking.md or whateve
 
     """
-    logger.debug("Starting")
 
 
 
@@ -38,6 +38,7 @@ cli.add_command(make.new_wish, name='make')
 cli.add_command(ls.get_wishes, name='ls')
 cli.add_command(ls.get_wish, name='get')
 cli.add_command(delete.delete, name='del')
+cli.add_command(edit.edit_wish, name='edit')
 
 if __name__ == '__main__':
     cli()
