@@ -5,13 +5,23 @@ import constants as C
 import ls
 
 logger = logging.getLogger(__name__)
-
+# TODO make debug optional
+# TODO: wish not saving on edit
+#@click.option('debug')
 @click.command()
 @click.argument('wish')
-def edit_wish(wish: str, quiet=True):
+def edit_wish(wish: str, quiet=True, debug=False):
     """
     Prints the markdown block associated with the specified wish.
     Exits 0 on success and 1 otherwise.
+
+    Args:
+        wish (str): [description]
+        quiet (bool, optional): [description]. Defaults to True.
+        debug (bool, optional): [description]. Defaults to False.
+
+    Returns:
+        [type]: [description]
     """
     print('edit wish')
     if wish not in ls._get_wishes():
@@ -53,18 +63,23 @@ def edit_wish(wish: str, quiet=True):
     debug_before_tmp = tempfile.mkstemp(text=True, dir='.', suffix='.tmp', prefix='before-wish')
     debug_wish_tmp = tempfile.mkstemp(text=True, dir='.', suffix='.tmp', prefix='wish')
 
-    with open(debug_before_tmp[1], 'w') as b, open('comb.tmp', 'w') as c:
-        b.write(before_wish)
-        c.write(before_wish)
-    with open(debug_wish_tmp[1], 'w') as f, open('comb.tmp', 'a') as c:
-        f.write(block)
-        c.write(block)
-    with open(debug_after_tmp[1], 'w') as a, open('comb.tmp', 'a') as c:
-        a.write(after_wish)
-        c.write(after_wish)
-    #with open('comb.tmp', 'w') as c:
-    #    c.write(before_wish)
-    print(f"before wish debug file: {debug_before_tmp[1]}")
-    print(f"wish debug file: {debug_wish_tmp[1]}")
-    print(f"after wish debug file: {debug_after_tmp[1]}")
+    if debug:
+        with open(debug_before_tmp[1], 'w') as b, open('comb.tmp', 'w') as c:
+            b.write(before_wish)
+            c.write(before_wish)
+        with open(debug_wish_tmp[1], 'w') as f, open('comb.tmp', 'a') as c:
+            f.write(block)
+            c.write(block)
+        with open(debug_after_tmp[1], 'w') as a, open('comb.tmp', 'a') as c:
+            a.write(after_wish)
+            c.write(after_wish)
+        #with open('comb.tmp', 'w') as c:
+        #    c.write(before_wish)
+        print(f"before wish debug file: {debug_before_tmp[1]}")
+        print(f"wish debug file: {debug_wish_tmp[1]}")
+        print(f"after wish debug file: {debug_after_tmp[1]}")
 
+
+def _commit():
+    # AHA. ha. lol
+    pass
