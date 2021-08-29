@@ -3,9 +3,9 @@ import logging
 import constants as C
 
 logger = logging.getLogger(__name__)
-
+#TODO: make fname optional
+#@click.argument('fname')
 @click.command(short_help="Prints the list of wishes currently stored in wishlist.md and exits.")
-@click.argument('fname')
 def get_wishes(fname=C.wishlist):
     """
     Prints the list of wishes currently stored in wishlist.md and exits.
