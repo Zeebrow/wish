@@ -9,23 +9,26 @@ logger = logging.getLogger(__name__)
 class Wishlist:
     def __init__(self):
         self.file = C.wishlist
-        self.wishes = _get_wishes()
+        self.wishes = self._get_wishes()
 
     def _get_wishes(self):
         _wishes = []
         with open(C.wishlist, 'r') as wl:
             for line in wl:
                 if line.startswith("## "):
-                    #_wishes.append(''.join(line.strip().split(' ')[1:]))
-                    w = line.strip().split(' ')[1:]
+                    w = ''.join(line.strip().split(' ')[1:])
                     _wishes.append(Wish(w))
         return _wishes
 
     def _print_wish(self, wish):
+        for w in self.wishes:
+            if w.wish == wish:
+                print(w.text)
+                return w.text
+
         if wish not in self.wishes:
             click.echo(f"No such wish: {wish} - try wish make {wish} to create")
-            retrun None
-        print()
+            return None
 
     def _add_wish(self, wish):
         w = Wish(wish)
@@ -39,7 +42,7 @@ class Wish:
         self.text = self._get_text()
 
     def __repr__(self):
-        retrun self.wish
+        return self.wish
 
     def __del__(self):
         # remove skel
@@ -58,10 +61,10 @@ class Wish:
                 if line.startswith('## ') and _print_output:
                     _print_output = False
                 if _print_output:
-                    text += line.strip()
+                    text += line
                 if line.startswith(f"## {self.wish}"):
                     _print_output = True
-                    text += line.strip()
+                    text += line
 
         return text
 
@@ -76,3 +79,10 @@ class Wish:
 
     def _delete(self):
         pass
+
+
+if __name__ == '__main__':
+    wl = Wishlist()
+    print(wl.wishes)
+    w = Wish('useful')
+    print(w.text)
