@@ -9,7 +9,7 @@ logger = logging.getLogger()
 f = logging.Formatter('%(asctime)s : %(name)s : %(funcName)s : %(levelname)s: %(message)s')
 sh = logging.StreamHandler()
 sh.setFormatter(f)
-logger.setLevel(level=logging.DEBUG)
+logger.setLevel(level=logging.INFO)
 logger.addHandler(sh)
 
 @click.group()

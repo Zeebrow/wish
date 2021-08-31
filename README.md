@@ -16,3 +16,10 @@ Commands:
   ls
   make
 ```
+
+## Install 
+
+```
+pip install -e
+```
+
