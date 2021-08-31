@@ -9,3 +9,21 @@ repopath = myrepos + '/santapls/'
 skelpath = repopath + 'prj-skel/'
 archpath = repopath + 'archive/'
 wishlist = repopath + 'wishlist.md'
+
+skel = lambda wishname: f"""\
+## {wishname}
+________
+### Synopsis
+
+### Usage
+
+```
+{wishname}
+```
+
+### Would Require
+
+### Difficulty
+
+
+"""

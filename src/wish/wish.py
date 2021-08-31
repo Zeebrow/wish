@@ -1,4 +1,5 @@
 import logging
+from textwrap import dedent
 from os.path import sep
 import constants as C
 
@@ -20,10 +21,9 @@ class Wishlist:
                     _wishes.append(Wish(w))
         return _wishes
 
-    def _print_wish(self, wish):
+    def get_wish(self, wish):
         for w in self.wishes:
             if w.wish == wish:
-                print(w.text)
                 return w.text
 
         if wish not in self.wishes:
@@ -37,12 +37,12 @@ class Wishlist:
 
 class Wish:
     def __init__(self, wish):
-        self.wish = wish
-        self.skel = C.skelpath + wish + sep + "README.md"
-        self.text = self._get_text()
+        self.name = wish
+        self.skel = C.skelpath + self.name + sep + "README.md"
+        self.block = self._get_text()
 
     def __repr__(self):
-        return self.wish
+        return self.name
 
     def __del__(self):
         # remove skel
@@ -54,25 +54,44 @@ class Wish:
     def _get_text(self):
         # hear ye, hear ye
         # wishlist.md is the source of truth
-        text = ''
+        mdtext = ''
         with open(C.wishlist, 'r') as wl:
             _print_output = False
             for line in wl:
                 if line.startswith('## ') and _print_output:
                     _print_output = False
                 if _print_output:
-                    text += line
-                if line.startswith(f"## {self.wish}"):
+                    mdtext += line
+                if line.startswith(f"## {self.name}"):
                     _print_output = True
-                    text += line
+                    mdtext += line
 
-        return text
+        return mdtext
 
     def _print(self):
-        print(self.text)
+        print(self.block)
 
-    def _make(self):
-        pass
+    def _skel(self):
+        block = \
+    f"""    ## {self.name}
+    ________
+    ### Synopsis
+
+    ### Usage
+
+    ```
+    {self.name}
+    ```
+
+    ### Would Require
+
+    ### Difficulty
+
+
+        """
+        block = dedent(block)
+
+        return block
 
     def _edit(self):
         pass
@@ -86,3 +105,4 @@ if __name__ == '__main__':
     print(wl.wishes)
     w = Wish('useful')
     print(w.text)
+    print(w.block)
