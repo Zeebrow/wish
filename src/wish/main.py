@@ -6,7 +6,7 @@ logger = logging.getLogger()
 f = logging.Formatter('%(asctime)s : %(name)s : %(funcName)s : %(levelname)s: %(message)s')
 sh = logging.StreamHandler()
 sh.setFormatter(f)
-logger.setLevel(level=logging.INFO)
+logger.setLevel(level=logging.DEBUG)
 logger.addHandler(sh)
 
 @click.group()
@@ -36,14 +36,26 @@ def ls():
     """
     list all current wishes
     """
-    # TODO: templates
+    # TODO: format
     [print(w, end=' ') for w in wl.get_wishes()]
     print()
-    return 0
 
-# cli.add_command(make.new_wish, name='make')
+@click.command()
+@click.argument('wish')
+def get(wish):
+    # TODO format
+    print()
+    print(wl.get_wish(wish))
+
+@click.command()
+@click.argument('wish')
+def make(wish):
+    pass
+
+
+cli.add_command(make, name='make')
 cli.add_command(ls, name='ls')
-# cli.add_command(get, name='get')
+cli.add_command(get, name='get')
 # cli.add_command(delete.delete, name='del')
 # cli.add_command(edit.edit_wish, name='edit')
 

@@ -24,21 +24,25 @@ class Wishlist:
         click command 'ls'
         Returns list of wishes
         """
-        return self.wishes
+        wl = []
+        for w in self.wishes:
+            wl.append(w.name)
+        return wl
 
     def get_wish(self, wish):
         """
         Returns raw markdown text representation of `wish`
         or None if wish doesn't exist
         """
-        for w in self.wishes:
-            if w.wish == wish:
-                return w.text
-
         if not self._wish_exists(wish):
             logger.warning(f"No such wish: {wish} - try wish make {wish} to create")
             #click.echo(f"No such wish: {wish} - try wish make {wish} to create")
             return None
+        logger.debug(f"Getting block for '{wish}'")
+        for w in self.wishes:
+            if w.name == wish:
+                return w.block
+
 
     def del_wish(self, wish, commit_message="", push=True):
         """
@@ -48,26 +52,27 @@ class Wishlist:
         if not self._wish_exists(wish):
             logger.warning(f"Cannot remove wish '{wish}': does not exist")
             return None
-        w =Wish(wish)
+        w = Wish(wish)
         w.del_wish()
         # r=True is saying 'git rm -r'
         self.repo.index.remove(C.skelpath + wish, r=True)
         self.repo.index.add(C.wishlist)
         self._commit(msg=f"Delete wish '{wish}'")
+
+        # not strictly necessary, as the program will exit shortly after del_wish() returns.
+        self.wishes.remove(wish)
         return True
 
     def add_wish(self, wish, mdtext):
         w = Wish(wish)
         w.add(mdtext)
+
+        # sanitary
+        self.wishes.append(w)
         pass
 
-    def _wish_exists(self, wish):
-        print(f"Wishexists?: {wish}")
-        _wl = self.get_wishes()
-        if wish in _wl:
-            print('wish exists')
-            return True
-        return False
+    def _wish_exists(self, wish):      
+        return True if wish in self.get_wishes() else False
 
     def _set_wishes(self) -> list:
         """
@@ -77,8 +82,8 @@ class Wishlist:
             for line in wl:
                 if line.startswith("## "):
                     w = ''.join(line.strip().split(' ')[1:])
-                    logger.debug(f"found wish: {w}")
-                    self.wishes.append(w)
+                    # self.wishes.append(w)
+                    self.wishes.append(Wish(w))
         #return _wishes
 
     def _commit(self, msg=''):
@@ -88,8 +93,8 @@ class Wishlist:
         if msg == '':
             msg = "Committing change..."
             logger.warning(f"Using generic commit message...")
-        repo.index.commit(message=msg)
-        remote = repo.remote()
+        self.repo.index.commit(message=msg)
+        remote = self.repo.remote()
         #remote.push()
         self._set_wishes()
 
@@ -106,25 +111,28 @@ class Wish:
     def __repr__(self):
         return self.name
 
-    def _get_text(self):
+    def _get_text(self) -> str:
         # hear ye, hear ye
         # wishlist.md is the source of truth
-        # not prj_skel README
+        # not prj_skel README            
         mdtext = ''
         with open(C.wishlist, 'r') as wl:
             _print_output = False
+            _ct = 0
             for line in wl:
                 if line.startswith('## ') and _print_output:
                     _print_output = False
                 if _print_output:
+                    _ct += 1
                     mdtext += line
                 if line.startswith(f"## {self.name}"):
+                    _ct += 1
                     _print_output = True
                     mdtext += line
-
+        logger.debug(f"Got {_ct} lines for wish '{self.name}'.")
         return mdtext
 
-    def del_wish(self):
+    def del_wish(self) -> bool:
         # update wishlist
         with open(C.wishlist, 'r') as wl:
             lines = wl.readlines()
@@ -141,10 +149,16 @@ class Wish:
         deldir = C.skelpath + self.name
         rmtree(deldir)
 
-    def _print(self):
+        # cleanliness
+        self.block = None
+        self.skel = None
+        self.name = "." + self.name 
+        return True
+
+    def _print(self) -> None:
         print(self.block)
 
-    def _write_block(self):
+    def _write_block(self) -> bool:
         """
         Thought: CRUD operations can be generalized as a "write_block" operation
         so we could call open() in one place, here, instead of in every operation

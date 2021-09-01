@@ -1,4 +1,9 @@
 import os
+"""
+Configuration parameters, app constants, os-specific tuning, etc. goes here.
+This is basically a dumpster for globals.
+"""
+
 # MYREPOS = '/home/zeebrow/repos/github.com/zeebrow'
 myrepos =  os.getenv('MYREPOS') if os.getenv('MYREPOS') != "" else None
 if not myrepos:
