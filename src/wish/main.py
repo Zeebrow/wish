@@ -1,6 +1,6 @@
 import logging
 import click
-import wish
+from wish import Wishlist
 
 logger = logging.getLogger()
 f = logging.Formatter('%(asctime)s : %(name)s : %(funcName)s : %(levelname)s: %(message)s')
@@ -29,13 +29,23 @@ def cli():
 
     """
 
+wl = Wishlist()
 
+@click.command()
+def ls():
+    """
+    list all current wishes
+    """
+    # TODO: templates
+    [print(w, end=' ') for w in wl.get_wishes()]
+    print()
+    return 0
 
-cli.add_command(make.new_wish, name='make')
-cli.add_command(ls.get_wishes, name='ls')
-cli.add_command(ls.get_wish, name='get')
-cli.add_command(delete.delete, name='del')
-cli.add_command(edit.edit_wish, name='edit')
+# cli.add_command(make.new_wish, name='make')
+cli.add_command(ls, name='ls')
+# cli.add_command(get, name='get')
+# cli.add_command(delete.delete, name='del')
+# cli.add_command(edit.edit_wish, name='edit')
 
 if __name__ == '__main__':
     cli()
