@@ -1,9 +1,6 @@
 import logging
 import click
-import make
-import ls
-import delete
-import edit
+import wish
 
 logger = logging.getLogger()
 f = logging.Formatter('%(asctime)s : %(name)s : %(funcName)s : %(levelname)s: %(message)s')
