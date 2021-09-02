@@ -1,5 +1,7 @@
 # wish
 
+`NOTE:` This code is being refactored.
+
 Use a markdown file to keep a list of projects you want to do.
 
 ## Usage
