@@ -50,6 +50,7 @@ def get(wish):
 @click.command()
 @click.argument('wish')
 def make(wish):
+    block = click.edit(block, require_save=True, extension='.md')
     pass
 
 
