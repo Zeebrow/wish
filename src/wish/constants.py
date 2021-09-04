@@ -1,21 +1,29 @@
-import os
+from os import getenv
+from os.path import sep
+from pathlib import Path
 """
 Configuration parameters, app constants, os-specific tuning, etc. goes here.
 This is basically a dumpster for globals.
 """
 
 # MYREPOS = '/home/zeebrow/repos/github.com/zeebrow'
-myrepos =  os.getenv('MYREPOS') if os.getenv('MYREPOS') != "" else None
+myrepos =  getenv('MYREPOS') if getenv('MYREPOS') != "" else None
 if not myrepos:
+    # TODO: XDG_DATA_DIR
+    # getenv('')
     print("Uuuhhhh... ")
-    os.exit(1)
+    exit(1)
 
-repopath = myrepos + '/santapls/'
-skelpath = repopath + 'prj-skel/'
-archpath = repopath + 'archive/'
-wishlist = repopath + 'wishlist.md'
-
-skel = lambda wishname: f"""\
+# repo_path = myrepos + f'{sep}santapls{sep}'
+# prj_skel_path = repo_path + f'prj-skel{sep}'
+# archive_path = repo_path + f'archive{sep}'
+# wishlist = repo_path + 'wishlist.md'
+repo_path = Path(myrepos) / 'santapls'
+archive_path = repo_path / 'archive'
+wishlist = repo_path / 'wishlist.md'
+prj_skel_path = lambda wishname: repo_path / 'prj-skel' / wishname
+wish_readme = lambda wishname: prj_skel_path(wishname) / 'README.md'
+new_wish_skel = lambda wishname: f"""\
 ## {wishname}
 ________
 ### Synopsis
@@ -32,3 +40,10 @@ ________
 
 
 """
+
+if __name__ == '__main__':
+    print(repo_path)
+    print(prj_skel_path('some_weesh'))
+    print(archive_path)
+    print(wishlist)
+    print(wish_readme('some_wish'))

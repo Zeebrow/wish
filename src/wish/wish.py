@@ -1,102 +1,14 @@
 import logging
+from os import stat, path
+import pathlib 
 from textwrap import dedent
-from os.path import sep
 from shutil import rmtree
 from git import Repo
 
 import constants as C
-
 logger = logging.getLogger(__name__)
 
-class Wishlist:
-    """
-    Wishlist is a collection of Wish objects
-    Responsible for managing git state
-    """
-    def __init__(self, repopath=C.repopath):
-        self.wishlist = C.wishlist
-        self.wishes = []
-        self._set_wishes()
-        self.repo = Repo(repopath)
 
-    def get_wishes(self):
-        """
-        click command 'ls'
-        Returns list of wishes
-        """
-        wl = []
-        for w in self.wishes:
-            wl.append(w.name)
-        return wl
-
-    def get_wish(self, wish):
-        """
-        Returns raw markdown text representation of `wish`
-        or None if wish doesn't exist
-        """
-        if not self._wish_exists(wish):
-            logger.warning(f"No such wish: {wish} - try wish make {wish} to create")
-            #click.echo(f"No such wish: {wish} - try wish make {wish} to create")
-            return None
-        logger.debug(f"Getting block for '{wish}'")
-        for w in self.wishes:
-            if w.name == wish:
-                return w.block
-
-
-    def del_wish(self, wish, commit_message="", push=True):
-        """
-        Remove wish from list.
-        Returns True on success or None otherwise.
-        """
-        if not self._wish_exists(wish):
-            logger.warning(f"Cannot remove wish '{wish}': does not exist")
-            return None
-        w = Wish(wish)
-        w.del_wish()
-        # r=True is saying 'git rm -r'
-        self.repo.index.remove(C.skelpath + wish, r=True)
-        self.repo.index.add(C.wishlist)
-        self._commit(msg=f"Delete wish '{wish}'")
-
-        # not strictly necessary, as the program will exit shortly after del_wish() returns.
-        self.wishes.remove(wish)
-        return True
-
-    def add_wish(self, wish, mdtext):
-        w = Wish(wish)
-        w.add(mdtext)
-
-        # sanitary
-        self.wishes.append(w)
-        pass
-
-    def _wish_exists(self, wish):      
-        return True if wish in self.get_wishes() else False
-
-    def _set_wishes(self) -> list:
-        """
-        Set wishes list
-        """
-        with open(C.wishlist, 'r') as wl:
-            for line in wl:
-                if line.startswith("## "):
-                    w = ''.join(line.strip().split(' ')[1:])
-                    # self.wishes.append(w)
-                    self.wishes.append(Wish(w))
-        #return _wishes
-
-    def _commit(self, msg=''):
-        """
-        Commit changes to git and push
-        """
-        if msg == '':
-            msg = "Committing change..."
-            logger.warning(f"Using generic commit message...")
-        self.repo.index.commit(message=msg)
-        remote = self.repo.remote()
-        #remote.push()
-        self._set_wishes()
 
 class Wish:
     """
@@ -105,16 +17,18 @@ class Wish:
     """
     def __init__(self, wish):
         self.name = wish
-        self.skel = C.skelpath + self.name + sep + "README.md"
-        self.block = self._get_text()
-
+        self.prj_path = C.prj_skel_path(self.name)
+        self.readme = C.wish_readme(self.name)
+        self.block = self._load_text()
+        self.exists = False if self.block == '' else True
+            
     def __repr__(self):
         return self.name
 
-    def _get_text(self) -> str:
+    def _load_text(self) -> str:
         # hear ye, hear ye
         # wishlist.md is the source of truth
-        # not prj_skel README            
+        # not prj_skel README
         mdtext = ''
         with open(C.wishlist, 'r') as wl:
             _print_output = False
@@ -134,6 +48,9 @@ class Wish:
 
     def del_wish(self) -> bool:
         # update wishlist
+        if not self.exists:
+            logger.error(f"Can't delete wish '{self}' - does not exist!")
+            return False
         with open(C.wishlist, 'r') as wl:
             lines = wl.readlines()
         with open(C.wishlist, 'w') as wl:
@@ -145,61 +62,64 @@ class Wish:
                     keep_output = False
                 if keep_output:
                     wl.write(line)
-        # remove skel
-        deldir = C.skelpath + self.name
-        rmtree(deldir)
+        rmtree(self.prj_path)
 
         # cleanliness
         self.block = None
         self.skel = None
-        self.name = "." + self.name 
+        self.name = "." + self.name
         return True
 
     def _print(self) -> None:
         print(self.block)
 
-    def _write_block(self) -> bool:
-        """
-        Thought: CRUD operations can be generalized as a "write_block" operation
-        so we could call open() in one place, here, instead of in every operation
-        """
-        pass
-    def _make(self):
-        """
-        Add new Wish
-        TODO: figure out proper way to open for editting via click
-        It would be nice to not have click defined in Wish at all
-        """
-        block = \
-    f"""    ## {self.name}
-    ________
-    ### Synopsis
+    def _set_block(self, mdtext) -> bool:
+        if self.block == '':
+            self.block = C.new_wish_skel(self.name)
+        else:
+            self.block = mdtext
+        return True
 
-    ### Usage
+    def make_new(self, mdtext):
+        self._set_block(mdtext)
+        self._write_block_to_prj_skel()
+        with open(C.wishlist, 'a') as wl:
+            wl.write(self.block)
 
-    ```
-    {self.name}
-    ```
+    def _write_block_to_prj_skel(self):
+        self.prj_path.mkdir(parents=True, exist_ok=True)
+        with open(self.readme, 'w') as sk:
+            sk.write(self.block)
+        
+    def _edit_wish(self):
+        if self.block == '':
+            logger.warning(f"Cannot edit wish '{self.name}' - does not exist!")
+            return
+        with open(C.wishlist, 'r') as wl:
+            before_wish = ''
+            after_wish = ''
+            append_output=False
+            b4 = True
+            after = False
 
-    ### Would Require
-
-    ### Difficulty
-
-
-    """
-        block = dedent(block)
-        self.text = block
-
-    def _edit(self):
-        pass
+            for line in wl:
+                if line.startswith(f'## ') and append_output:
+                    after = True
+                    append_output = False
+                if append_output:
+                    print("--" + line.strip())
+                if line.startswith(f'## {self.name}'):
+                    b4 = False
+                    append_output = True
+                if b4:
+                    before_wish += line
+                if after:
+                    after_wish += line
+        with open(C.wishlist, 'w') as nw:
+            nw.write(before_wish)
+            nw.write(self.block)
+            nw.write(after_wish)
 
     def _delete(self):
         pass
 
-
-if __name__ == '__main__':
-    wl = Wishlist()
-    print(wl.wishes)
-    w = Wish('useful')
-    print(w.text)
-    print(w.block)

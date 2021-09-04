@@ -1,12 +1,14 @@
 import logging
 import click
-from wish import Wishlist
+from wish import Wish
+from wishlist import Wishlist
+import constants as C
 
 logger = logging.getLogger()
 f = logging.Formatter('%(asctime)s : %(name)s : %(funcName)s : %(levelname)s: %(message)s')
 sh = logging.StreamHandler()
 sh.setFormatter(f)
-logger.setLevel(level=logging.DEBUG)
+logger.setLevel(level=logging.INFO)
 logger.addHandler(sh)
 
 @click.group()
@@ -50,10 +52,18 @@ def get(wish):
 @click.command()
 @click.argument('wish')
 def make(wish):
-    block = click.edit(block, require_save=True, extension='.md')
-    pass
-
-
+    if wl.wish_exists(wish):
+        click.secho(f"Cannot create new wish '{wish}' - wish already exists!", fg='yellow')
+        # logger.warning(f"Cannot create new wish '{wish}' - wish already exists!")
+        return
+    # click.edit automatically opens a temp file and handles the rest
+    mdtext = click.edit(C.new_wish_skel(wish), require_save=True, extension='.md')
+    if not mdtext:
+        logger.warning(f"Wish '{wish}' not created - changes were not saved.")
+        return None
+    wl.add_wish(wish, mdtext)
+    wl.commit(wish)
+    click.secho(f"Commiting new wish: {wish}", fg='green')
 cli.add_command(make, name='make')
 cli.add_command(ls, name='ls')
 cli.add_command(get, name='get')
