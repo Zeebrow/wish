@@ -8,7 +8,7 @@ logger = logging.getLogger()
 f = logging.Formatter('%(asctime)s : %(name)s : %(funcName)s : %(levelname)s: %(message)s')
 sh = logging.StreamHandler()
 sh.setFormatter(f)
-logger.setLevel(level=logging.INFO)
+logger.setLevel(level=logging.DEBUG)
 logger.addHandler(sh)
 
 @click.group()
@@ -39,31 +39,43 @@ def ls():
     list all current wishes
     """
     # TODO: format
-    [print(w, end=' ') for w in wl.get_wishes()]
+    wl.get_wishes()
+    [print(w, end=' ') for w in wl.wishes]
     print()
 
 @click.command()
-@click.argument('wish')
-def get(wish):
+@click.argument('wishname')
+def get(wishname):
     # TODO format
-    print()
-    print(wl.get_wish(wish))
+    print(wl.get_wish(wishname))
 
 @click.command()
-@click.argument('wish')
-def make(wish):
-    if wl.wish_exists(wish):
-        click.secho(f"Cannot create new wish '{wish}' - wish already exists!", fg='yellow')
-        # logger.warning(f"Cannot create new wish '{wish}' - wish already exists!")
-        return
-    # click.edit automatically opens a temp file and handles the rest
-    mdtext = click.edit(C.new_wish_skel(wish), require_save=True, extension='.md')
+@click.argument('wishname')
+def make(wishname):
+    w = Wish(wishname)
+    w.create()
+    mdtext = click.edit(w.block, require_save=True, extension='.md')
     if not mdtext:
-        logger.warning(f"Wish '{wish}' not created - changes were not saved.")
-        return None
-    wl.add_wish(wish, mdtext)
-    wl.commit(wish)
-    click.secho(f"Commiting new wish: {wish}", fg='green')
+        logger.warning(f"Wish '{wishname}' not created - changes were not saved.")
+        click.secho(f"Wish '{wishname}' not created - changes were not saved.", fg='yellow')
+        return
+    w.update(mdtext)
+    click.secho(f"Commiting new wish: {wishname}", fg='green')
+#@click.command()
+#@click.argument('wish')
+#def make(wish):
+#    if wl.wish_exists(wish):
+#        click.secho(f"Cannot create new wish '{wish}' - wish already exists!", fg='yellow')
+#        # logger.warning(f"Cannot create new wish '{wish}' - wish already exists!")
+#        return
+#    # click.edit automatically opens a temp file and handles the rest
+#    mdtext = click.edit(C.new_wish_skel(wish), require_save=True, extension='.md')
+#    if not mdtext:
+#        logger.warning(f"Wish '{wish}' not created - changes were not saved.")
+#        return None
+#    wl.add_wish(wish, mdtext)
+#    wl.commit(wish)
+#    click.secho(f"Commiting new wish: {wish}", fg='green')
 cli.add_command(make, name='make')
 cli.add_command(ls, name='ls')
 cli.add_command(get, name='get')

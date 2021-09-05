@@ -1,6 +1,8 @@
 from os import getenv
 from os.path import sep
 from pathlib import Path
+import re
+
 """
 Configuration parameters, app constants, os-specific tuning, etc. goes here.
 This is basically a dumpster for globals.
@@ -40,6 +42,8 @@ ________
 
 
 """
+
+wish_regex = re.compile("^##\s+(.*)$")
 
 if __name__ == '__main__':
     print(repo_path)
