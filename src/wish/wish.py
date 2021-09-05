@@ -1,9 +1,10 @@
 import logging
 from os import stat, path
-import pathlib 
+import pathlib
 from textwrap import dedent
 from shutil import rmtree
 from git import Repo
+import re
 
 import constants as C
 logger = logging.getLogger(__name__)
@@ -21,7 +22,7 @@ class Wish:
         self.readme = C.wish_readme(self.name)
         self.block = self._load_text()
         self.exists = False if self.block == '' else True
-            
+
     def __repr__(self):
         return self.name
 
@@ -29,17 +30,20 @@ class Wish:
         # hear ye, hear ye
         # wishlist.md is the source of truth
         # not prj_skel README
+        r = re.compile("^##\s+(.*)$")
         mdtext = ''
         with open(C.wishlist, 'r') as wl:
             _print_output = False
             _ct = 0
             for line in wl:
-                if line.startswith('## ') and _print_output:
+                m = r.match(line)
+                if m and _print_output:
+                    print(f"found {m.groups()[0]}")
                     _print_output = False
                 if _print_output:
                     _ct += 1
                     mdtext += line
-                if line.startswith(f"## {self.name}"):
+                if (m) and (m.groups()[0] == self.name):
                     _ct += 1
                     _print_output = True
                     mdtext += line
