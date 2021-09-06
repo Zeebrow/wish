@@ -51,7 +51,23 @@ def get(wishname):
 
 @click.command()
 @click.argument('wishname')
+def edit(wishname):
+    # TODO format
+    logger.debug(f"Editting new wish: {wishname}...")
+    click.secho(f"Editting wish: {wishname}", fg='green')
+    w = Wish(wishname)
+    mdtext = click.edit(w.block, require_save=True, extension='.md')
+    if not mdtext:
+        logger.warning(f"Wish '{wishname}' not created - changes were not saved.")
+        click.secho(f"Wish '{wishname}' not created - changes were not saved.", fg='yellow')
+        return
+    w.update(mdtext)
+
+@click.command()
+@click.argument('wishname')
 def make(wishname):
+    logger.debug(f"Creating new wish: {wishname}...")
+    click.secho(f"Creating new wish: {wishname}", fg='green')
     w = Wish(wishname)
     w.create()
     mdtext = click.edit(w.block, require_save=True, extension='.md')
@@ -60,27 +76,22 @@ def make(wishname):
         click.secho(f"Wish '{wishname}' not created - changes were not saved.", fg='yellow')
         return
     w.update(mdtext)
-    click.secho(f"Commiting new wish: {wishname}", fg='green')
-#@click.command()
-#@click.argument('wish')
-#def make(wish):
-#    if wl.wish_exists(wish):
-#        click.secho(f"Cannot create new wish '{wish}' - wish already exists!", fg='yellow')
-#        # logger.warning(f"Cannot create new wish '{wish}' - wish already exists!")
-#        return
-#    # click.edit automatically opens a temp file and handles the rest
-#    mdtext = click.edit(C.new_wish_skel(wish), require_save=True, extension='.md')
-#    if not mdtext:
-#        logger.warning(f"Wish '{wish}' not created - changes were not saved.")
-#        return None
-#    wl.add_wish(wish, mdtext)
-#    wl.commit(wish)
-#    click.secho(f"Commiting new wish: {wish}", fg='green')
+
+@click.command()
+@click.argument('wishname')
+def delete(wishname):
+    # TODO format
+    logger.debug(f"Deleting wish: {wishname}...")
+    click.secho(f"Deleting wish: {wishname}", fg='green')
+    w = Wish(wishname)
+    w.delete()
+
+
 cli.add_command(make, name='make')
 cli.add_command(ls, name='ls')
 cli.add_command(get, name='get')
-# cli.add_command(delete.delete, name='del')
-# cli.add_command(edit.edit_wish, name='edit')
+cli.add_command(delete, name='del')
+cli.add_command(edit, name='edit')
 
 if __name__ == '__main__':
     cli()

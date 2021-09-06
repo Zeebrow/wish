@@ -27,6 +27,23 @@ pip install -e
 
 This is the plan for the refactor.
 
+## the lastmiles approach
+
+Inspired by friendly C programmer greybeard [lastmiles](https://www.youtube.com/user/lastmiles).
+
+Linux philosophers, avert your eyes - for the time being, this program is
+going to say a LOT more than what's necessary. Hopefully it fails just as noisily.
+
+The approach I want to take making this program consists of three parts:
+
+1. Tell me what you (the program) are about to do
+2. Do the thing
+3. Tell me what you (the program) just did.
+
+Very clear, indeed! Tuning the log levels can come later; for now, 
+logger actions are level `INFO`. For now, both info and warning+ logging levels
+will be printed to `stdout`. 
+
 ## raw data is easily readable and shareable
 
 A `wish` is just a block of markdown text that begins with an `h2` block.
