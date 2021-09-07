@@ -46,8 +46,8 @@ def ls():
 @click.command()
 @click.argument('wishname')
 def get(wishname):
-    # TODO format
-    print(wl.get_wish(wishname))
+    w = Wish(wishname)
+    w.pprint()
 
 @click.command()
 @click.argument('wishname')
@@ -80,12 +80,14 @@ def make(wishname):
 @click.command()
 @click.argument('wishname')
 def delete(wishname):
-    # TODO format
     logger.debug(f"Deleting wish: {wishname}...")
     click.secho(f"Deleting wish: {wishname}", fg='green')
     w = Wish(wishname)
     w.delete()
 
+
+def commit_msg():
+    pass
 
 cli.add_command(make, name='make')
 cli.add_command(ls, name='ls')

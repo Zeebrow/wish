@@ -9,6 +9,7 @@ import tempfile
 from git import Repo
 
 import constants as C
+from prettyprint_mdtext import format_mdtext
 
 logger = logging.getLogger(__name__)
 
@@ -67,6 +68,10 @@ class Wish:
         self._write_block_to_prj_skel()
         self._commit()
         logger.debug(f"Created new wish '{self.name}'.")
+
+    def pprint(self, mdtext='', filename=''):
+        if mdtext == '':
+            format_mdtext(mdtext=self.block)
 
     def show(self) -> str:
         return self.block

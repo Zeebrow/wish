@@ -23,6 +23,12 @@ Commands:
 pip install -e
 ```
 
+## TODO
+
+* integrate `src/scripts/helpers/fmt_output` into `wish get`
+* config-based usage
+
+
 # algorithm concept
 
 This is the plan for the refactor.

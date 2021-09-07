@@ -3,11 +3,12 @@ from os.path import sep
 from pathlib import Path
 import re
 
+import os
+
 """
 Configuration parameters, app constants, os-specific tuning, etc. goes here.
 This is basically a dumpster for globals.
 """
-
 # MYREPOS = '/home/zeebrow/repos/github.com/zeebrow'
 myrepos =  getenv('MYREPOS') if getenv('MYREPOS') != "" else None
 if not myrepos:
@@ -15,6 +16,9 @@ if not myrepos:
     # getenv('')
     print("Uuuhhhh... ")
     exit(1)
+
+fmt_md_binary = Path(myrepos + "/wish/src/scripts/helpers/fmt_md_output")
+#print(os.stat(fmt_md_binary))
 
 # repo_path = myrepos + f'{sep}santapls{sep}'
 # prj_skel_path = repo_path + f'prj-skel{sep}'
