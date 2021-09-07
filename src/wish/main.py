@@ -44,10 +44,11 @@ def ls():
     print()
 
 @click.command()
+@click.option('-r','--raw', 'raw', is_flag=True)
 @click.argument('wishname')
-def get(wishname):
+def get(wishname, raw):
     w = Wish(wishname)
-    w.pprint()
+    w.pprint(raw)
 
 @click.command()
 @click.argument('wishname')

@@ -69,12 +69,12 @@ class Wish:
         self._commit()
         logger.debug(f"Created new wish '{self.name}'.")
 
-    def pprint(self, mdtext='', filename=''):
+    def pprint(self, raw=False, mdtext='', filename=''):
+        if raw:
+            print(self.block)
+            return
         if mdtext == '':
             format_mdtext(mdtext=self.block)
-
-    def show(self) -> str:
-        return self.block
 
     def update(self, mdtext):
         self.block = mdtext

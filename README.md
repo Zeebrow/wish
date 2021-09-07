@@ -5,15 +5,26 @@ Use a markdown file to keep a list of projects you want to do.
 ## Usage
 
 ```
-wish [OPTIONS] COMMAND [ARGS]...
+Usage: wish [OPTIONS] COMMAND [ARGS]...
+
+  Keep track of your list of projects you want to do.
+
+  Wishes are managed by reading to and writing from wishlist.md. When you
+  make a wish, you provide the name for the command you want to make. You
+  can optionally edit a block of markdown to provide more details on your
+  idea.
+
+  When the markdown file is saved, wishlist.md and the project skeleton
+  directory are committed to git.
 
 Options:
   --help  Show this message and exit.
 
 Commands:
   del
+  edit
   get
-  ls
+  ls    list all current wishes
   make
 ```
 
@@ -25,6 +36,7 @@ pip install -e
 
 ## TODO
 
+* turn 'wish make' into `wish new`. `wish make` will 'publish' a wish into a repo.
 * PROPERLY integrate `src/scripts/helpers/fmt_output` into `wish get`
 * config-based usage
 
