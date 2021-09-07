@@ -25,7 +25,7 @@ pip install -e
 
 ## TODO
 
-* integrate `src/scripts/helpers/fmt_output` into `wish get`
+* PROPERLY integrate `src/scripts/helpers/fmt_output` into `wish get`
 * config-based usage
 
 
