@@ -36,7 +36,7 @@ pip install -e
 
 ## TODO
 
-* turn 'wish make' into `wish new`. `wish make` will 'publish' a wish into a repo.
+* set repo path with [Click environment var](https://click.palletsprojects.com/en/8.0.x/options/#values-from-environment-variables) 
 * PROPERLY integrate `src/scripts/helpers/fmt_output` into `wish get`
 * config-based usage
 

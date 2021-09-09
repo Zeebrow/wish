@@ -1,3 +1,4 @@
 .ropeproject
+**/fmt_md_text
 *.egg*
 **.html

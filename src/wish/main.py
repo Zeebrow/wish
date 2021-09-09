@@ -22,13 +22,6 @@ def cli():
 
     When the markdown file is saved, wishlist.md and the project skeleton directory are committed to git.
 
-    \b
-    TODO:
-    -----
-    - edit a wish you have saved to continue where you left off.
-    - publish your wish as a simple, static html webpage
-    - grant a wish to move it off of wishlist.md and onto magicking.md or whateve
-
     """
 
 wl = Wishlist()
