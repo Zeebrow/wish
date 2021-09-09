@@ -1,1 +1,2 @@
-from . import wish
+from .wishobj import Wish
+from .wishlist import Wishlist

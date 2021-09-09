@@ -9,7 +9,7 @@ import tempfile
 from git import Repo
 
 from . import constants as C
-from . prettyprint_mdtext import format_mdtext
+from .prettyprint_mdtext import format_mdtext
 
 logger = logging.getLogger(__name__)
 

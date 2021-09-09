@@ -3,8 +3,9 @@ import re
 
 from git import Repo
 
-from wish import Wish
-import constants as C
+from .wishobj import Wish
+from . import constants as C
+
 
 logger = logging.getLogger(__name__)
 

@@ -17,7 +17,7 @@ if not myrepos:
     print("Uuuhhhh... ")
     exit(1)
 
-fmt_md_binary = Path(myrepos + "/wish/src/scripts/helpers/fmt_md_text")
+fmt_md_binary = Path(myrepos + "/wish/src/plugins/fmt_md_text")
 #print(os.stat(fmt_md_binary))
 
 # repo_path = myrepos + f'{sep}santapls{sep}'

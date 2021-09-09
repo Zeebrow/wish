@@ -1,6 +1,6 @@
 import logging
 import click
-from ..wish import Wish, Wishlist, constants as C
+from src.wish import Wish, Wishlist
 #from wishlist import Wishlist
 #import constants as C
 
