@@ -2,7 +2,8 @@ import os, sys, logging
 from pathlib import Path
 from subprocess import PIPE, STDOUT, Popen
 
-import  constants as C
+from . import constants as C
+
 
 logger = logging.getLogger(__name__)
 

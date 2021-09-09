@@ -5,11 +5,11 @@ import pathlib
 from textwrap import dedent
 from shutil import rmtree
 import tempfile
-
+from pathlib import Path
 from git import Repo
 
-import constants as C
-from prettyprint_mdtext import format_mdtext
+from . import constants as C
+from . import prettyprint_mdtext
 
 logger = logging.getLogger(__name__)
 
@@ -18,11 +18,15 @@ class Wish:
     Wishes are the 'main' uint of data
     Wish manages the contents to be committed to git by Wishlist
     """
-    def __init__(self, wish):
+    def __init__(self, wishname, repo_path=C.repo_path):
         self._r = C.wish_regex
-        self.name = wish
-        self.prj_path = C.prj_skel_path(self.name)
-        self.readme = C.wish_readme(self.name)
+        self.name = wishname
+        self.repo_path = Path(repo_path)
+        self.wishlist_file = self.repo_path / "wishlist.md"
+        self.prj_path = self.repo_path / "prj-skel"
+        #self.prj_path = C.prj_skel_path(self.name)
+        self.readme = self.prj_path / "README.md"
+        #self.readme = C.wish_readme(self.name)
         self.before = None
         self.after = None
         self.block = None
@@ -33,7 +37,7 @@ class Wish:
         return self.name
 
     def _load_wish(self):
-        with open(C.wishlist, 'r') as wl:
+        with open(self.wishlist_file, 'r') as wl:
             self.before = ''
             self.after = ''
 
@@ -74,7 +78,7 @@ class Wish:
             print(self.block)
             return
         if mdtext == '':
-            format_mdtext(mdtext=self.block)
+            prettyprint_mdtext.format_mdtext(mdtext=self.block)
 
     def update(self, mdtext):
         self.block = mdtext
@@ -90,14 +94,14 @@ class Wish:
         self._remove_prj_skel()
         logger.debug(f"Deleted wish '{self.name}' and associated project.")
 
-    def _write_wishlist(self, wlfile=C.wishlist):
+    def _write_wishlist(self):
         #tmp_wl = tempfile.mktemp(mode='w+b')
         b = 0
-        with open(wlfile, 'w') as wl:
+        with open(self.wishlist_file, 'w') as wl:
             b += wl.write(self.before)
             b += wl.write(self.block)
             b += wl.write(self.after)
-        logger.debug(f"Wrote {b} bytes to '{wlfile}'.")
+        logger.debug(f"Wrote {b} bytes to '{self.wishlist_file}'.")
 
     def _remove_prj_skel(self):
         rmtree(self.prj_path)

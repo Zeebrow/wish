@@ -1,9 +1,9 @@
 import logging
 import click
-from wish import Wish
-from wishlist import Wishlist
-import constants as C
-
+#from .wish import Wish
+#from .utils import get_wishes
+from wishlist import Wish
+from wishlist import get_wishes
 logger = logging.getLogger()
 f = logging.Formatter('%(asctime)s : %(name)s : %(funcName)s : %(levelname)s: %(message)s')
 sh = logging.StreamHandler()
@@ -24,16 +24,14 @@ def cli():
 
     """
 
-wl = Wishlist()
-
 @click.command()
 def ls():
     """
     list all current wishes
     """
     # TODO: format
-    wl.get_wishes()
-    [print(w, end=' ') for w in wl.wishes]
+    
+    [print(w, end=' ') for w in get_wishes()]
     print()
 
 @click.command()

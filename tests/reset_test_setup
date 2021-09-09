@@ -1,0 +1,6 @@
+#!/bin/bash
+TEST_REPO_PATH=test_repo_path
+cp -v ${TEST_REPO_PATH}/template_wishlist.md ${TEST_REPO_PATH}/wishlist.md
+rm -rf ${TEST_REPO_PATH}/prj-skel/*
+mkdir ${TEST_REPO_PATH}/prj-skel/test1
+cp -v ${TEST_REPO_PATH}/template_wishlist.md ${TEST_REPO_PATH}/prj-skel/test1.README.md
