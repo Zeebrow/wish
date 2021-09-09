@@ -1,3 +1,1 @@
-from main import cli
-
-cli()
+from . import wish

@@ -1,8 +1,8 @@
 import logging
 import click
-from wish import Wish
-from wishlist import Wishlist
-import constants as C
+from ..wish import Wish, Wishlist, constants as C
+#from wishlist import Wishlist
+#import constants as C
 
 logger = logging.getLogger()
 f = logging.Formatter('%(asctime)s : %(name)s : %(funcName)s : %(levelname)s: %(message)s')
