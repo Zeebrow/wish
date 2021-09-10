@@ -4,7 +4,7 @@ Use a markdown file to keep a list of projects you want to do.
 
 ## Usage
 
-```
+```bash
 Usage: wish [OPTIONS] COMMAND [ARGS]...
 
   Keep track of your list of projects you want to do.
