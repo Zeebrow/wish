@@ -120,7 +120,9 @@ wishlist.edit(WISHNAME) = wish.before + wish.block + wish.after
 Removes `wish.block` from `wishlist.md` by setting `wish.block` to
 an empty string
 
-``` wishlist.del(WISHNAME) := wish.before + wish.block + wish.after ```
+``` 
+wishlist.del(WISHNAME) := wish.before + wish.block + wish.after 
+```
 
 ## Why git?
 
