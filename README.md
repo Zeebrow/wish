@@ -47,7 +47,7 @@ This is the plan for the refactor.
 
 ## the lastmiles approach
 
-Inspired by friendly C programmer greybeard [lastmiles](https://www.youtube.com/user/lastmiles).
+Inspired by friendly C programmer and greybeard [lastmiles](https://www.youtube.com/user/lastmiles).
 
 Linux philosophers, avert your eyes - for the time being, this program is
 going to say a LOT more than what's necessary. Hopefully it fails just as noisily.
@@ -123,12 +123,3 @@ an empty string
 ```bash
 wishlist.del(WISHNAME) := wish.before + wish.block + wish.after 
 ```
-
-## Why git?
-
-`git` is everywhere - in (current year), there is a gigantic group of folks
-familiar with it.
-Safe to say that you're part of that group, seeing as how you're reading this.
-Unless, somehow, NASA found my wishlist to be the pinnacle of wishlist tooling,
-published it, and you're reading this in a history book (possible, but
-unlikely).
