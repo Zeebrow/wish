@@ -37,7 +37,7 @@ pip install -e
 ## TODO
 
 * set repo path with [Click environment var](https://click.palletsprojects.com/en/8.0.x/options/#values-from-environment-variables) 
-* PROPERLY integrate `src/scripts/helpers/fmt_output` into `wish get`
+* ~~PROPERLY integrate `src/scripts/helpers/fmt_output` into `wish get`~~ Done
 * config-based usage
 
 
