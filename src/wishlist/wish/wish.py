@@ -1,7 +1,7 @@
 import logging
-import re
 from os import stat, path
-import pathlib
+import os
+import shutil
 from textwrap import dedent
 from shutil import rmtree
 import tempfile
@@ -26,21 +26,20 @@ class Wish:
         self.wishlist_file = self.repo_path / "wishlist.md"
         self.prj_path = self.repo_path / "prj-skel" / self.name
         self.readme = self.prj_path / "README.md"
-        self.before = None
-        self.after = None
-        self.block = None
-        
+        self.before = ''
+        self.block = ''
+        self.after = ''
+        # careful with _load_wish(). This may cause a bug in the future, if
+        # initializing multiple new wishes before calling create() on any 
+        # one of them.
         self._load_wish()
-        self.exists = False if self.block is None else True
+        self.exists = self._check_exists()
 
     def __repr__(self):
         return self.name
 
     def _load_wish(self):
         with open(self.wishlist_file, 'r') as wl:
-            self.before = ''
-            self.after = ''
-
             append_output=False
             b4 = True
             after = False
@@ -64,16 +63,18 @@ class Wish:
 
     def create(self):
         # whats the difference between below and 'if not self.block'?
-        if self.block is not None:
+        if self.block != '':
             logger.error(f"Cannot create new wish '{self.name}' - already exists!")
-            return
+            raise ValueError(f"Cannot create new wish '{self.name}' - already exists!")
         self.block = C.new_wish_skel(self.name)
+
         self._write_wishlist()
         self._write_block_to_prj_skel()
         self._commit()
         logger.debug(f"Created new wish '{self.name}'.")
+        return self._check_exists()
 
-    def pprint(self, raw=False, mdtext='', filename=''):
+    def pprint(self, raw=False, mdtext=''):
         if raw:
             print(self.block)
             return
@@ -88,20 +89,40 @@ class Wish:
         logger.debug(f"Updated wish '{self.name}'.")
 
 
-    def delete(self):
+    def delete(self) -> bool:
+        if self.block == '':
+            logger.warning(f"Could not delete wish '{self}': Does not exist.")
+            raise ValueError(f"Could not delete wish '{self}': Does not exist.")
         self.block = ''
         self._write_wishlist()
         self._remove_prj_skel()
         logger.debug(f"Deleted wish '{self.name}' and associated project.")
+        return not self._check_exists()
+
+    def _check_exists(self) -> bool:
+        """Re-loads self.before, self.after, and self.block from wishlist."""
+        self.before = ''
+        self.block = ''
+        self.after = ''
+        self._load_wish()
+        self.exists = False if self.block == '' else True
+        return self.exists
 
     def _write_wishlist(self):
-        #tmp_wl = tempfile.mktemp(mode='w+b')
+        tmp_wl = tempfile.mktemp()
         b = 0
-        with open(self.wishlist_file, 'w') as wl:
+        with open(tmp_wl, 'w') as wl:
             b += wl.write(self.before)
             b += wl.write(self.block)
             b += wl.write(self.after)
-        logger.debug(f"Wrote {b} bytes to '{self.wishlist_file}'.")
+        try:
+            os.remove(self.wishlist_file)
+            shutil.copyfile(tmp_wl, self.wishlist_file)
+            logger.debug(f"Wrote {b} bytes to '{self.wishlist_file}'.")
+        except Exception as e:
+            logger.critical(f"Could not replace existing wishlist file '{self.wishlist_file}': {e}")
+        finally:
+            os.remove(tmp_wl)
 
     def _remove_prj_skel(self):
         rmtree(self.prj_path)
