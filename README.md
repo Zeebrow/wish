@@ -4,7 +4,7 @@ Use a markdown file to keep a list of projects you want to do.
 
 ## Usage
 
-```bash
+```
 Usage: wish [OPTIONS] COMMAND [ARGS]...
 
   Keep track of your list of projects you want to do.
@@ -30,7 +30,7 @@ Commands:
 
 ## Install 
 
-```
+```bash
 pip install -e
 ```
 
@@ -92,7 +92,7 @@ Appends to the end of the wishlist, a default 'skeleton' wish.
 
 The wishlist is re-written and committed as 
 
-```
+```bash
 wishlist.make(WISHNAME) := wish.before + wish.block + wish.after
 ```
 
@@ -111,7 +111,7 @@ editor, using `click.edit`.
 
 Changes to `wish.block` are saved in memory, and persisted with
 
-```
+```bash
 wishlist.edit(WISHNAME) = wish.before + wish.block + wish.after
 ```
 
@@ -120,7 +120,7 @@ wishlist.edit(WISHNAME) = wish.before + wish.block + wish.after
 Removes `wish.block` from `wishlist.md` by setting `wish.block` to
 an empty string
 
-``` 
+```bash
 wishlist.del(WISHNAME) := wish.before + wish.block + wish.after 
 ```
 
@@ -128,6 +128,7 @@ wishlist.del(WISHNAME) := wish.before + wish.block + wish.after
 
 `git` is everywhere - in (current year), there is a gigantic group of folks
 familiar with it.
-Safe to say that you're part of that group, 
-
-
+Safe to say that you're part of that group, seeing as how you're reading this.
+Unless, somehow, NASA found my wishlist to be the pinnacle of wishlist tooling,
+published it, and you're reading this in a history book (possible, but
+unlikely).
