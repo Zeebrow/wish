@@ -16,7 +16,4 @@ stuff
 
 ### Difficulty
 
-teh hardest
 
-
-ay es dee eff jay kay el semicolon

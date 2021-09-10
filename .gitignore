@@ -1,3 +1,4 @@
+**/*.swp
 tests/test_repo_path/**
 .ropeproject
 **/fmt_md_text
