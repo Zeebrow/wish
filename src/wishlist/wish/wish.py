@@ -22,14 +22,14 @@ class Wish:
         self._r = C.wish_regex
         self.name = wishname
         self.repo_path = Path(repo_path)
+
         self.wishlist_file = self.repo_path / "wishlist.md"
-        self.prj_path = self.repo_path / "prj-skel"
-        #self.prj_path = C.prj_skel_path(self.name)
+        self.prj_path = self.repo_path / "prj-skel" / self.name
         self.readme = self.prj_path / "README.md"
-        #self.readme = C.wish_readme(self.name)
         self.before = None
         self.after = None
         self.block = None
+        
         self._load_wish()
         self.exists = False if self.block is None else True
 
@@ -121,8 +121,8 @@ class Wish:
         if msg == '':
             msg = "Committing change..."
             logger.warning(f"Using generic commit message...")
-        self.repo.index.add(str(C.wishlist))
-        self.repo.index.add(str(C.wish_readme(wishname)))
+        self.repo.index.add(str(self.wishlist_file))
+        self.repo.index.add(str(self.readme))
         self.repo.index.commit(message=msg)
         if push:
             remote = self.repo.remote()

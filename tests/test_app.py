@@ -1,5 +1,5 @@
 from click.testing import CliRunner
-from wish import wish
+from wishlist import wish
 
 def test_wish_cli():
     runner = CliRunner()
