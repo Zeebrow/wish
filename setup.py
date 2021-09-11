@@ -1,9 +1,9 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='wish',
+    name='wishlist',
     version='0.0.1',
-    package_dir={'': 'src/wish'},
+    package_dir={'': 'src'},
     packages=find_packages(),
     install_requires=[
         'Click',
@@ -11,7 +11,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'wish = main:cli',
+            'wish = scripts.main:cli',
         ],
     },
 )
