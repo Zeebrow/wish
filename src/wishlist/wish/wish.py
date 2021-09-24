@@ -96,7 +96,7 @@ class Wish:
         self.block = ''
         self._write_wishlist()
         self._remove_prj_skel()
-        logger.debug(f"Deleted wish '{self.name}' and associated project.")
+        logger.debug(f"Deleted wish '{self.name}'.")
         return not self._check_exists()
 
     def _check_exists(self) -> bool:
@@ -125,8 +125,13 @@ class Wish:
             os.remove(tmp_wl)
 
     def _remove_prj_skel(self):
-        rmtree(self.prj_path)
-        logger.debug(f"Removed project {self.prj_path} for wish '{self.name}'")
+        try:
+            rmtree(self.prj_path)
+            logger.debug(f"Removed project {self.prj_path} for wish '{self.name}'")
+            return
+        except FileNotFoundError as e:
+            logger.warning(f"Wish '{self.name}' has no associated project to delete!")
+            return
 
     def _write_block_to_prj_skel(self):
         self.prj_path.mkdir(parents=True, exist_ok=True)

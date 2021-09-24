@@ -20,3 +20,7 @@ def get_wishes(wishlist_file=C.wishlist):
             if m:
                 wishlist.append(m.groups()[0].strip())
     return wishlist
+
+def commit(prj_path, repo=C.repo_path):
+    repo = Repo(repo / prj_path)
+    pass
