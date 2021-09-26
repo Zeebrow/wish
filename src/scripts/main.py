@@ -59,15 +59,20 @@ def edit(wishname):
 @click.argument('wishname')
 def make(wishname):
     logger.debug(f"Creating new wish: {wishname}...")
-    click.secho(f"Creating new wish: {wishname}", fg='green')
     w = Wish(wishname)
-    w.create()
+    if w.exists:
+        # informs https://github.com/Zeebrow/wish/issues/1
+        logger.critical(f"Cannot create new wish '{wishname}' - wish already exists.")
+        click.secho(f"Wish '{wishname}' already exists!", fg='red')
+        return 1
     mdtext = click.edit(w.block, require_save=True, extension='.md')
     if not mdtext:
         logger.warning(f"Wish '{wishname}' not created - changes were not saved.")
         click.secho(f"Wish '{wishname}' not created - changes were not saved.", fg='yellow')
         return
+    w.create()
     w.update(mdtext)
+    click.secho(f"Created new wish: {wishname}", fg='green')
 
 @click.command()
 @click.argument('wishname')
