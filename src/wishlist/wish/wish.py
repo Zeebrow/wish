@@ -54,6 +54,17 @@ class Wish:
         self._load_wish()
         self.exists = False if self.block == '' else True
         return self.exists
+    
+    def check_prj_readme(self) -> bool:
+        try:
+            with open(self.readme, 'r') as rm:
+                lines = rm.readlines()
+                if ''.join(lines) == self.block:
+                    return True
+                else:
+                    return False
+        except FileNotFoundError:
+            return False
 
     def _load_wish(self):
         """ 

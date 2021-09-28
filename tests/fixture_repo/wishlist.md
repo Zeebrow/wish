@@ -60,6 +60,20 @@ ________
 ### Synopsis
 
 This is a test wish
+and it has a little extra.
+
+its prj-skel does not match this at all.
+and will test against it.
+
+#### like a heading
+
+* and a list
+* oops I mean 
+* bullets
+
+1. and now it 
+1. has a 
+1. list
 
 ### Usage
 
@@ -73,5 +87,6 @@ stuff
 
 ### Difficulty
 
+probably more
 
 

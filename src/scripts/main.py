@@ -29,16 +29,28 @@ def ls():
     """
     list all current wishes
     """
-    # TODO: format
-    
-    [print(w, end=' ') for w in get_wishes()]
-    print()
+    wl = []
+    for wish in get_wishes():
+        wl.append(Wish(wish))
+
+#    [click.secho(w.name, fg='red') for w in wl if not w.check_prj_readme()]
+
+    for wish in get_wishes():
+        w = Wish(wish)
+        if w.exists and w.check_prj_readme():
+            click.echo(click.style(f"{w.name} {w.check_prj_readme()}", fg='red'))
+        else:
+            click.echo(click.style(f"{w.name} {w.check_prj_readme()}", fg='yellow'))
 
 @click.command()
 @click.option('-r','--raw', 'raw', is_flag=True)
 @click.argument('wishname')
 def get(wishname, raw):
     w = Wish(wishname)
+    if not w.exists:
+        logger.critical(f"Could not get wish '{wishname}' - wish does not exist.")
+        click.secho(f"No such wish '{wishname}'!", fg='red')
+        return
     w.pprint(raw)
 
 @click.command()
