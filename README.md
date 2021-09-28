@@ -2,6 +2,9 @@
 
 Use a markdown file to keep a list of projects you want to do.
 
+plan is to take out a slight chunk of `src/wishlist` and make a markdown db.
+so, tests are not going to be written against anything click-related.
+
 ## Usage
 
 ```
@@ -33,13 +36,6 @@ Commands:
 ```bash
 pip install -e
 ```
-
-## TODO
-
-* set repo path with [Click environment var](https://click.palletsprojects.com/en/8.0.x/options/#values-from-environment-variables) 
-* ~~PROPERLY integrate `src/scripts/helpers/fmt_output` into `wish get`~~ Done
-* config-based usage
-
 
 # algorithm concept
 

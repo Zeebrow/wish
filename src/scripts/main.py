@@ -3,7 +3,8 @@ import click
 #from .wish import Wish
 #from .utils import get_wishes
 from wishlist import Wish
-from wishlist import get_wishes
+from wishlist import get_wishes, check_prj_readme
+
 logger = logging.getLogger()
 f = logging.Formatter('%(asctime)s : %(name)s : %(funcName)s : %(levelname)s: %(message)s')
 sh = logging.StreamHandler()
@@ -37,10 +38,10 @@ def ls():
 
     for wish in get_wishes():
         w = Wish(wish)
-        if w.exists and w.check_prj_readme():
-            click.echo(click.style(f"{w.name} {w.check_prj_readme()}", fg='red'))
+        if w.exists and check_prj_readme(w):
+            click.echo(click.style(w.name, fg='yellow'))
         else:
-            click.echo(click.style(f"{w.name} {w.check_prj_readme()}", fg='yellow'))
+            click.echo(click.style(w.name, fg='green'))
 
 @click.command()
 @click.option('-r','--raw', 'raw', is_flag=True)

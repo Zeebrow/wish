@@ -55,17 +55,6 @@ class Wish:
         self.exists = False if self.block == '' else True
         return self.exists
     
-    def check_prj_readme(self) -> bool:
-        try:
-            with open(self.readme, 'r') as rm:
-                lines = rm.readlines()
-                if ''.join(lines) == self.block:
-                    return True
-                else:
-                    return False
-        except FileNotFoundError:
-            return False
-
     def _load_wish(self):
         """ 
         Meat and potatoes. The secret sauce. The reason for the season (get it? cuz wishlist? santapls?)

@@ -4,7 +4,7 @@ import shutil
 from os.path import basename
 from os import PathLike
 from pathlib import Path
-from wishlist import Wish
+from wishlist import Wish, check_prj_readme
 
 class TestCreateWish(unittest.TestCase):    
 
@@ -30,8 +30,8 @@ class TestCreateWish(unittest.TestCase):
         self.w4 = Wish("test4bad_skel_no_match_wl", repo_path=self.this_repo)
 
     def test_wish_check_prj_readme(self):
-        self.assertFalse(self.w4.check_prj_readme())
-        self.assertTrue(self.w1.check_prj_readme())
+        self.assertFalse(check_prj_readme(self.w4))
+        self.assertTrue(check_prj_readme(self.w1))
 
     def tearDown(self):
         shutil.rmtree(self.this_repo)
