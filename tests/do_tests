@@ -1,0 +1,15 @@
+#!/bin/bash
+declare -a failed
+declare -a passed
+
+for test in test_*; do
+  python3 "$test" >/dev/null 2>&1
+  if [ "$?" -ne 0 ]; then
+    failed+=("$test")
+  else
+    passed+=("$test")
+  fi
+done
+
+echo "OK: ${#passed[@]}"
+echo "failed(${#failed[@]}): ${failed[@]}"
