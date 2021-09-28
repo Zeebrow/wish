@@ -40,8 +40,7 @@ class TestDeleteWish(unittest.TestCase):
         # self.wish_readme = self.wish_prj_base_dir / "README.md"
 
     def tearDown(self):
-        pass
-        #shutil.rmtree(self.this_repo)
+        shutil.rmtree(self.this_repo)
 
     def test_del_wish_removes_prj_dir(self):
         self.assertTrue(self.w3.prj_path.exists())
