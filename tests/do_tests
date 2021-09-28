@@ -13,3 +13,4 @@ done
 
 echo "OK: ${#passed[@]}"
 echo "failed(${#failed[@]}): ${failed[@]}"
+exit "${#failed}"
