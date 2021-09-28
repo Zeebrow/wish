@@ -27,11 +27,10 @@ class Wish:
         # config-like params
         self.repo_path = Path(repo_path)
         self.wishlist_file = self.repo_path / "wishlist.md"
+
+        # remove when separated
         self.prj_path = self.repo_path / "prj-skel" / self.name
         self.readme = self.prj_path / "README.md"
-#        self.before = ''
-#        self.block = ''
-#        self.after = ''
 
         # make ready for caller
         self._init_wish()
@@ -42,7 +41,6 @@ class Wish:
     def _init_wish(self):
         try:
             self.exists = self._check_exists()
-            # fix for https://github.com/Zeebrow/wish/issues/1
             if not self.exists:
                 self.block = C.new_wish_skel(self.name)
         except Exception as e:
@@ -124,7 +122,8 @@ class Wish:
 
 
     def delete(self) -> bool:
-        if self.block == '':
+        self._check_exists()
+        if not self.exists:
             logger.warning(f"Could not delete wish '{self}': Does not exist.")
             raise ValueError(f"Could not delete wish '{self}': Does not exist.")
         self.block = ''

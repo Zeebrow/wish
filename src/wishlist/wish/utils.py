@@ -25,8 +25,8 @@ def check_prj_readme(w: wish.Wish) -> bool:
 
     try:
         with open(w.readme, 'r') as rm:
-            lines = rm.readlines()
-            if ''.join(lines) == w.block:
+            lines = rm.read()
+            if lines == w.block:
                 return True
             else:
                 return False

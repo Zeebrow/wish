@@ -40,7 +40,8 @@ class TestDeleteWish(unittest.TestCase):
         # self.wish_readme = self.wish_prj_base_dir / "README.md"
 
     def tearDown(self):
-        shutil.rmtree(self.this_repo)
+        pass
+        #shutil.rmtree(self.this_repo)
 
     def test_del_wish_removes_prj_dir(self):
         self.assertTrue(self.w3.prj_path.exists())
@@ -49,34 +50,23 @@ class TestDeleteWish(unittest.TestCase):
 
 
     def test_del_wish_doesnt_affect_other_wishes_in_wl(self):
-        # with open(self.wishlist, 'r') as wl:
-        #     wl_as_string = wl.read()
-        # print(wl_as_string)
-        # print("1########################################################################")
-        w0 = Wish(wishname=f"pre_{self.wishname}", repo_path=self.this_repo)
+
+        wishname = "some_wish"
+
+        w0 = Wish(wishname=f"pre_{wishname}", repo_path=self.this_repo)
         w0.create()
-        # with open(self.wishlist, 'r') as wl:
-        #     wl_as_string = wl.read()
-        # print(wl_as_string)
-        # print("2########################################################################")
-        w1 = Wish(wishname=f"delme_{self.wishname}", repo_path=self.this_repo)
+
+        w1 = Wish(wishname=f"delme_{wishname}", repo_path=self.this_repo)
         w1.create()
-        # with open(self.wishlist, 'r') as wl:
-        #     wl_as_string = wl.read()
-        # print(wl_as_string)
-        # print("3########################################################################")
-        w2 = Wish(wishname=f"post_{self.wishname}", repo_path=self.this_repo)
+
+        w2 = Wish(wishname=f"post_{wishname}", repo_path=self.this_repo)
         w2.create()
-        # with open(self.wishlist, 'r') as wl:
-        #     wl_as_string = wl.read()
-        # print(wl_as_string)
-        # print("4########################################################################")
+
         deleted_block = w1.block
         w1.delete()
-        with open(self.wishlist, 'r') as wl:
+        with open(self.this_repo/"wishlist.md",'r') as wl:
             wl_as_string = wl.read()
-        # print(wl_as_string)
-        # print("5########################################################################")
+
         self.assertIn(w0.block, wl_as_string)
         self.assertNotIn(deleted_block, wl_as_string)
         self.assertIn(w2.block, wl_as_string)
