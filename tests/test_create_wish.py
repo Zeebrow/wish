@@ -70,12 +70,6 @@ class TestCreateWish(unittest.TestCase):
         new_w5.create()
         self.assertEqual(new_w5.name, basename(new_w5.prj_path))
 
-    def test_create_wish_block_is_empty_str_until_create(self):
-        new_w5 = Wish("new_wish_5", repo_path=self.this_repo)
-        self.assertEqual(new_w5.block, '')
-        new_w5.create()
-        self.assertNotEqual(new_w5.block, '')
-
     def test_create_wish_creates_prj_skel(self):
         """Test for README.md"""
         wishname = "new_wish_5"
