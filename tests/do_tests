@@ -11,6 +11,6 @@ for test in test_*; do
   fi
 done
 
-echo "OK: ${#passed[@]}"
+echo "OK(${#passed[@]}): ${passed[@]}"
 echo "failed(${#failed[@]}): ${failed[@]}"
 exit "${#failed}"

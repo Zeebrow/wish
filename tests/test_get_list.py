@@ -51,11 +51,11 @@ class TestListWishes(unittest.TestCase):
                 self.wishname, 
                 get_wishes(wishlist_file=self.wishlist))
 
-    def test_get_wishes_after_delete_wish(self):
-        self.assertTrue(False)
+#    def test_get_wishes_after_delete_wish(self):
+#        self.assertTrue(False)
 
-    def test_get_wishes_after_edit_wish(self):
-        self.assertTrue(False)
+#    def test_get_wishes_after_edit_wish(self):
+#        self.assertTrue(False)
 
 if __name__ == '__main__':
     unittest.main()
