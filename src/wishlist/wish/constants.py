@@ -8,21 +8,21 @@ Configuration parameters, app constants, os-specific tuning, etc. goes here.
 This is basically a dumpster for globals.
 """
 # MYREPOS = '/home/zeebrow/repos/github.com/zeebrow'
-myrepos =  getenv('MYREPOS') if getenv('MYREPOS') != "" else None
-if not myrepos:
+wishlist_home =  getenv('WISHLIST_HOME') if getenv('WISHLIST_HOME') != "" else None
+if not wishlist_home:
     # TODO: XDG_DATA_DIR
     # getenv('')
     print("Uuuhhhh... ")
     exit(1)
 
-fmt_md_binary = Path(myrepos + "/wish/src/plugins/fmt_md_text")
+fmt_md_binary = Path(wishlist_home + "/wish/src/plugins/fmt_md_text")
 #print(os.stat(fmt_md_binary))
 
-# repo_path = myrepos + f'{sep}santapls{sep}'
+# repo_path = wishlist_home + f'{sep}santapls{sep}'
 # prj_skel_path = repo_path + f'prj-skel{sep}'
 # archive_path = repo_path + f'archive{sep}'
 # wishlist = repo_path + 'wishlist.md'
-repo_path = Path(myrepos) / 'santapls'
+repo_path = Path(wishlist_home) 
 archive_path = repo_path / 'archive'
 wishlist = repo_path / 'wishlist.md'
 prj_skel_path = lambda wishname: repo_path / 'prj-skel' / wishname
