@@ -35,7 +35,8 @@ jobs:
         python -m pip install -r build-requirements.txt
         python -m build
     - name: Run unittests
-      env: WISHLIST_HOME=${{ github.env.GITHUB_WORKSPACE }}/tests
+      env: 
+        WISHLIST_HOME: ${{ github.env.GITHUB_WORKSPACE }}/tests/fixture_repo
       working-directory: ./tests
       run: |
         python -m pip install ../dist/wishlist-0.0.1.tar.gz
