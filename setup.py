@@ -4,7 +4,8 @@ setup(
     name='wishlist',
     version='0.0.1',
     package_dir={'': 'src'},
-    packages=find_packages(),
+    packages=find_packages(where="src"),
+    #packages=find_packages(),
     install_requires=[
         'Click',
         'GitPython'

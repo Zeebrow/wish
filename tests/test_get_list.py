@@ -7,12 +7,12 @@ from wishlist import get_wishes
 from wishlist import Wish
 import subprocess
 
-logger = logging.getLogger()
-f = logging.Formatter('%(asctime)s : %(name)s : %(funcName)s : %(levelname)s: %(message)s')
-sh = logging.StreamHandler()
-sh.setFormatter(f)
-logger.addHandler(sh)
-logger.setLevel(logging.DEBUG)
+#logger = logging.getLogger()
+#f = logging.Formatter('%(asctime)s : %(name)s : %(funcName)s : %(levelname)s: %(message)s')
+#sh = logging.StreamHandler()
+#sh.setFormatter(f)
+#logger.addHandler(sh)
+#logger.setLevel(logging.DEBUG)
 
 class TestListWishes(unittest.TestCase):
     
